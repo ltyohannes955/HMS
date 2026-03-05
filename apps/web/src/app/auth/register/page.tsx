@@ -9,7 +9,6 @@ import {
     LockIcon,
     UserIcon,
     PassportIcon,
-    ArrowRight01Icon,
     ViewIcon,
     ViewOffSlashIcon
 } from 'hugeicons-react';
@@ -70,11 +69,12 @@ export default function RegisterPage() {
                 description: 'You can now sign in with your credentials.',
             });
             router.push('/auth/login');
-        } catch (err: any) {
+        } catch (err: unknown) {
+            const error = err as { message?: string };
             toast({
                 variant: 'destructive',
                 title: 'Error',
-                description: err.message || 'An unexpected error occurred',
+                description: error?.message || 'An unexpected error occurred',
             });
         } finally {
             setIsLoading(false);

@@ -1,5 +1,4 @@
 import React from 'react';
-import Link from 'next/link';
 
 export default function AuthLayout({ children }: { children: React.ReactNode }) {
     return (
@@ -32,6 +31,7 @@ export default function AuthLayout({ children }: { children: React.ReactNode }) 
                         <div className="flex -space-x-3">
                             {[1, 2, 3, 4].map((i) => (
                                 <div key={i} className="h-10 w-10 rounded-full border-2 border-white/20 bg-blue-400 flex items-center justify-center text-[10px] overflow-hidden">
+                                    {/* eslint-disable-next-line @next/next/no-img-element */}
                                     <img src={`https://i.pravatar.cc/100?u=${i}`} alt="user" />
                                 </div>
                             ))}

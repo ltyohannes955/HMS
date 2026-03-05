@@ -9,7 +9,6 @@ import { Mail01Icon, LockIcon, Login01Icon, ViewIcon, ViewOffSlashIcon } from 'h
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/components/ui/card';
 import { loginSchema, type LoginFormValues } from '@/lib/validations';
 import { useToast } from '@/hooks/use-toast';
 import { useLoginMutation } from '@/features/auth/authApi';
@@ -45,11 +44,12 @@ export default function LoginPage() {
                 description: 'You have successfully signed in.',
             });
             router.push('/dashboard');
-        } catch (err: any) {
+        } catch (err: unknown) {
+            const error = err as { data?: { message?: string } };
             toast({
                 variant: 'destructive',
                 title: 'Login failed',
-                description: err?.data?.message || 'Invalid email or password',
+                description: error?.data?.message || 'Invalid email or password',
             });
         }
     };
@@ -161,7 +161,7 @@ export default function LoginPage() {
             </div>
 
             <p className="text-center text-sm text-muted-foreground">
-                Don't have an account?{' '}
+                Don&apos;t have an account?{' '}
                 <Link
                     href="/auth/register"
                     className="font-medium text-primary underline-offset-4 hover:underline"
