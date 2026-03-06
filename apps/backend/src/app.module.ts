@@ -5,25 +5,29 @@ import { AppService } from './app.service';
 import { PrismaModule } from './prisma/prisma.module';
 import { AuthModule } from './auth/auth.module';
 import { UsersModule } from './users/users.module';
+import { RolesModule } from './roles/roles.module';
+import { DepartmentsModule } from './departments/departments.module';
 import appConfig from './config/app.config';
 
 @Module({
-    imports: [
-        // ─── Config ───────────────────────────────────────────────────────────────
-        ConfigModule.forRoot({
-            isGlobal: true,
-            load: [appConfig],
-            envFilePath: ['.env', '.env.local'],
-        }),
+  imports: [
+    // ─── Config ───────────────────────────────────────────────────────────────
+    ConfigModule.forRoot({
+      isGlobal: true,
+      load: [appConfig],
+      envFilePath: ['.env', '.env.local'],
+    }),
 
-        // ─── Database ─────────────────────────────────────────────────────────────
-        PrismaModule,
+    // ─── Database ─────────────────────────────────────────────────────────────
+    PrismaModule,
 
-        // ─── Feature Modules ──────────────────────────────────────────────────────
-        AuthModule,
-        UsersModule,
-    ],
-    controllers: [AppController],
-    providers: [AppService],
+    // ─── Feature Modules ──────────────────────────────────────────────────────
+    AuthModule,
+    UsersModule,
+    RolesModule,
+    DepartmentsModule,
+  ],
+  controllers: [AppController],
+  providers: [AppService],
 })
-export class AppModule { }
+export class AppModule {}

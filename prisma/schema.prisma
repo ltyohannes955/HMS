@@ -3,6 +3,7 @@
 
 generator client {
   provider = "prisma-client-js"
+  output   = "../node_modules/.prisma-custom/client"
 }
 
 datasource db {
@@ -12,7 +13,7 @@ datasource db {
 
 // ─── Enums ───────────────────────────────────────────────────────────────────
 
-enum Role {
+enum RoleEnum {
   SUPER_ADMIN
   ADMIN
   DOCTOR
@@ -45,16 +46,46 @@ model User {
   password  String
   firstName String
   lastName  String
-  role      Role     @default(PATIENT)
   isActive  Boolean  @default(true)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
   // Relations
+  roleId       String?
+  departmentId String?
+  role         Role?       @relation(fields: [roleId], references: [id])
+  department   Department? @relation(fields: [departmentId], references: [id])
   staffProfile   StaffProfile?
   patientProfile PatientProfile?
 
   @@map("users")
+}
+
+model Role {
+  id          String   @id @default(cuid())
+  name        RoleEnum @unique
+  description String?
+  permissions String[]
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  users User[]
+
+  @@map("roles")
+}
+
+model Department {
+  id          String   @id @default(cuid())
+  name        String   @unique
+  description String?
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  users User[]
+
+  @@map("departments")
 }
 
 model StaffProfile {
