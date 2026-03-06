@@ -1,6 +1,16 @@
 import { IsString, IsEnum, IsOptional, IsBoolean, IsArray } from 'class-validator';
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
-import { RoleEnum } from '@prisma/client';
+
+export enum RoleEnum {
+  SUPER_ADMIN = 'SUPER_ADMIN',
+  ADMIN = 'ADMIN',
+  DOCTOR = 'DOCTOR',
+  NURSE = 'NURSE',
+  RECEPTIONIST = 'RECEPTIONIST',
+  PHARMACIST = 'PHARMACIST',
+  LAB_TECHNICIAN = 'LAB_TECHNICIAN',
+  PATIENT = 'PATIENT',
+}
 
 export class CreateRoleDto {
   @ApiProperty({ enum: RoleEnum, example: RoleEnum.DOCTOR })
