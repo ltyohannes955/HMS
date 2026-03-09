@@ -14,6 +14,10 @@ export class AuthService {
     const user = await this.usersService.findByEmail(email);
     if (!user) throw new UnauthorizedException('Invalid credentials');
 
+    if (!user.isActive) {
+      throw new UnauthorizedException('Account is disabled. Contact admin.');
+    }
+
     const isPasswordValid = await bcrypt.compare(password, user.password);
     if (!isPasswordValid) throw new UnauthorizedException('Invalid credentials');
 
@@ -33,6 +37,8 @@ export class AuthService {
         firstName: user.firstName,
         lastName: user.lastName,
         role: user.role?.name || 'PATIENT',
+        mustChangePassword: user.mustChangePassword,
+        isActive: user.isActive,
       },
     };
   }

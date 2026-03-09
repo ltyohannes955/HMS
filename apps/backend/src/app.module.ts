@@ -7,6 +7,7 @@ import { AuthModule } from './auth/auth.module';
 import { UsersModule } from './users/users.module';
 import { RolesModule } from './roles/roles.module';
 import { DepartmentsModule } from './departments/departments.module';
+import { PatientsModule } from './patients/patients.module';
 import appConfig from './config/app.config';
 
 @Module({
@@ -26,6 +27,7 @@ import appConfig from './config/app.config';
     UsersModule,
     RolesModule,
     DepartmentsModule,
+    PatientsModule,
   ],
   controllers: [AppController],
   providers: [AppService],
