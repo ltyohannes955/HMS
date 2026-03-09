@@ -7,19 +7,30 @@ import { Sidebar } from '@/components/layout/Sidebar';
 
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
   const { isAuthenticated } = useAppSelector((state) => state.auth);
-  const router = React.useRef(useRouter());
+  const router = useRouter();
 
   React.useEffect(() => {
-    if (!isAuthenticated && typeof window !== 'undefined') {
-      const token = localStorage.getItem('hms_token');
-      if (!token) {
-        router.current.push('/auth/login');
+    const token = typeof window !== 'undefined' ? localStorage.getItem('hms_token') : null;
+
+    if (!isAuthenticated && !token) {
+      router.push('/auth/login');
+    } else if (!isAuthenticated && token) {
+      // Token exists but auth state not hydrated - could be a refresh
+      // Let the app handle this, but redirect if definitely not authenticated
+      const userStr = typeof window !== 'undefined' ? localStorage.getItem('hms_user') : null;
+      if (!userStr) {
+        router.push('/auth/login');
       }
     }
-  }, [isAuthenticated]);
+  }, [isAuthenticated, router]);
 
+  // Don't render anything if not authenticated
   if (!isAuthenticated) {
-    return null;
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+      </div>
+    );
   }
 
   return (

@@ -14,7 +14,7 @@ export class CreateUserDto {
   @IsEmail()
   email!: string;
 
-  @ApiProperty({ example: 'password123', minLength: 6 })
+  @ApiProperty({ example: 'TempPass123', minLength: 6 })
   @IsString()
   @MinLength(6)
   password!: string;
@@ -28,4 +28,49 @@ export class CreateUserDto {
   @IsOptional()
   @IsUUID()
   departmentId?: string;
+}
+
+export class UpdateUserDto {
+  @ApiPropertyOptional()
+  @IsOptional()
+  @IsString()
+  firstName?: string;
+
+  @ApiPropertyOptional()
+  @IsOptional()
+  @IsString()
+  lastName?: string;
+
+  @ApiPropertyOptional()
+  @IsOptional()
+  @IsEmail()
+  email?: string;
+
+  @ApiPropertyOptional()
+  @IsOptional()
+  @IsString()
+  roleId?: string;
+
+  @ApiPropertyOptional()
+  @IsOptional()
+  @IsString()
+  departmentId?: string;
+}
+
+export class ChangePasswordDto {
+  @ApiProperty({ example: 'OldPass123' })
+  @IsString()
+  currentPassword!: string;
+
+  @ApiProperty({ example: 'NewPass123', minLength: 6 })
+  @IsString()
+  @MinLength(6)
+  newPassword!: string;
+}
+
+export class ResetPasswordDto {
+  @ApiProperty({ example: 'NewTempPass123', minLength: 6 })
+  @IsString()
+  @MinLength(6)
+  newPassword!: string;
 }

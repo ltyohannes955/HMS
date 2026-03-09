@@ -39,11 +39,20 @@ export default function LoginPage() {
     try {
       const response = await login(data).unwrap();
       dispatch(setCredentials({ user: response.user, token: response.access_token }));
-      toast({
-        title: 'Welcome back!',
-        description: 'You have successfully signed in.',
-      });
-      router.push('/dashboard');
+
+      if (response.user.mustChangePassword) {
+        toast({
+          title: 'Password change required',
+          description: 'You must change your password before accessing the system.',
+        });
+        router.push('/auth/change-password');
+      } else {
+        toast({
+          title: 'Welcome back!',
+          description: 'You have successfully signed in.',
+        });
+        router.push('/dashboard');
+      }
     } catch (err: unknown) {
       const error = err as { data?: { message?: string } };
       toast({
