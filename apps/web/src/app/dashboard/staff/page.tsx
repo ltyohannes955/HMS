@@ -111,17 +111,45 @@ export default function StaffPage() {
   };
 
   const handleCreate = async () => {
+    // Validation
+    const errors: string[] = [];
+
+    if (!formData.firstName.trim()) {
+      errors.push('First name is required');
+    }
+    if (!formData.lastName.trim()) {
+      errors.push('Last name is required');
+    }
+    if (!formData.email.trim()) {
+      errors.push('Email is required');
+    }
+    if (!formData.password) {
+      errors.push('Password is required');
+    } else if (formData.password.length < 6) {
+      errors.push('Password must be at least 6 characters');
+    }
+    if (!formData.roleId) {
+      errors.push('Role is required');
+    }
+
+    if (errors.length > 0) {
+      toast({
+        variant: 'destructive',
+        title: 'Validation Error',
+        description: errors.join(', '),
+      });
+      return;
+    }
+
     try {
       const userData: any = {
         firstName: formData.firstName,
         lastName: formData.lastName,
         email: formData.email,
         password: formData.password,
+        roleId: formData.roleId,
       };
 
-      if (formData.roleId) {
-        userData.roleId = formData.roleId;
-      }
       if (formData.departmentId) {
         userData.departmentId = formData.departmentId;
       }
@@ -140,6 +168,25 @@ export default function StaffPage() {
   };
 
   const handleEdit = async () => {
+    // Validation
+    const errors: string[] = [];
+
+    if (!formData.firstName.trim()) {
+      errors.push('First name is required');
+    }
+    if (!formData.lastName.trim()) {
+      errors.push('Last name is required');
+    }
+
+    if (errors.length > 0) {
+      toast({
+        variant: 'destructive',
+        title: 'Validation Error',
+        description: errors.join(', '),
+      });
+      return;
+    }
+
     try {
       await updateUser({
         id: selectedUser.id,
@@ -173,6 +220,24 @@ export default function StaffPage() {
   };
 
   const handleResetPassword = async () => {
+    if (!tempPassword) {
+      toast({
+        variant: 'destructive',
+        title: 'Validation Error',
+        description: 'Please generate a new password first',
+      });
+      return;
+    }
+
+    if (tempPassword.length < 6) {
+      toast({
+        variant: 'destructive',
+        title: 'Validation Error',
+        description: 'Password must be at least 6 characters',
+      });
+      return;
+    }
+
     try {
       await resetPassword({ id: selectedUser.id, newPassword: tempPassword }).unwrap();
       toast({ title: 'Password reset successfully' });
